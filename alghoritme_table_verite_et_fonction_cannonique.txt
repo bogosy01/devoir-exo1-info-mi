@@ -1,0 +1,56 @@
+Algorithme TableVeriteEntree
+Début
+    // Demande à l'utilisateur la fonction logique
+    Ecrire "Entrez la fonction logique (par exemple, '(a and b) or not c'): "
+    Lire fonction_logique
+
+    // Demande à l'utilisateur les noms des variables (séparés par des virgules)
+    Ecrire "Entrez les noms des variables (séparés par des virgules, par exemple, 'a,b,c'): "
+    Lire noms_variables_str
+    noms_variables ← séparer noms_variables_str par ',' et supprimer les espaces
+
+    n ← longueur de noms_variables
+
+    // Initialise les listes pour stocker les mintermes et les maxtermes
+    mintermes ← liste vide
+    maxtermes ← liste vide
+
+    // Imprime l'en-tête de la table de vérité
+    Ecrire "|", noms_variables, "|", fonction_logique, "|"
+
+    // Imprime la ligne de séparation
+    Ecrire "|---|" répété n+1 fois
+
+    // Itère sur toutes les combinaisons possibles de valeurs de vérité
+    Pour i allant de 0 à 2^n - 1 faire
+        // Convertit l'entier i en une chaîne binaire, puis la remplit avec des zéros à gauche
+        ligne ← convertir i en binaire et remplir avec des zéros à gauche jusqu'à la longueur n
+
+        // Crée un dictionnaire pour stocker les valeurs de vérité des variables
+        Pour chaque j allant de 0 à n-1 faire
+            dictionnaire_verite[noms_variables[j]] ← convertir ligne[j] en booléen
+
+        // Évalue la fonction logique
+        resultat ← évaluer fonction_logique avec dictionnaire_verite
+
+        // Imprime la ligne de la table de vérité
+        Ecrire "|", valeurs de dictionnaire_verite, "|", resultat, "|"
+
+        // Si le résultat est Vrai, ajoute le minterme à la liste
+        Si resultat est Vrai alors
+            minterme ← créer minterme à partir de dictionnaire_verite
+            ajouter minterme à mintermes
+        // Si le résultat est Faux, ajoute le maxterme à la liste
+        Sinon
+            maxterme ← créer maxterme à partir de dictionnaire_verite
+            ajouter maxterme à maxtermes
+        Fin Si
+    Fin Pour
+
+    // Imprime les formes canoniques
+    Ecrire "\nPremière Forme Canonique (SOP):"
+    Ecrire "F = ", mintermes séparés par ' + '
+
+    Ecrire "\nDeuxième Forme Canonique (POS):"
+    Ecrire "F = ", maxtermes séparés par '(' et ')'
+Fin
